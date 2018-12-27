@@ -1,0 +1,15 @@
+Team WaterlemonSoda - Anthony Lam, Johnson Li, Garvey Zhou
+
+Project -name-:
+
+-Description
+    -We will be making an irc-like chat program.
+    -A user would be able to run the program with arguments to login with username and password.
+    -After logging in, the user would see a shell-like interface, where they can run commands like
+     '>join <channel-name>' or '>connect <username>'
+    -After joining a channel, or connecting with a user, it would be like any normal chatroom.
+
+-Technical Design
+    
+
+-Timeline
