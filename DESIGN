@@ -10,6 +10,12 @@ Project -name-:
     -After joining a channel, or connecting with a user, it would be like any normal chatroom.
 
 -Technical Design
-    
+    -Topics covered
+        -Chat history will be stored to a file
+	-Semaphores will prevent two clients from writing to the same file at the same time
+	-Pipes/Sockets will manage user to server/network communication
+	-Processes will enable the server to handle different chats simultaneously
+    -Work Distribution
+    -Data Structures    
 
 -Timeline
