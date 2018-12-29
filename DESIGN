@@ -15,7 +15,11 @@ Project -name-:
 	-Semaphores will prevent two clients from writing to the same file at the same time
 	-Pipes/Sockets will manage user to server/network communication
 	-Processes will enable the server to handle different chats simultaneously
+	-Stat will be used to check if there was new messages
     -Work Distribution
-    -Data Structures    
+    -Data Structures
+    	-Files to hold chat history
+	-char** to hold current chat
 
 -Timeline
+    -
