@@ -27,4 +27,7 @@ Project -name-:
 	-char** to hold current chat
 
 -Timeline
-    -
+    -12/28: proposal
+    -01/04: create and communicate through chatrooms
+    -01/12: implement accounts and users
+    -01/18: implement private messages between users
