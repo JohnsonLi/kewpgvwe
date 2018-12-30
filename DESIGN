@@ -18,13 +18,12 @@ Project -name-:
 	-Stat will be used to check if there was new messages
 
     -Work Distribution
-    	-uml diagram-Garvey,Anthony,Johnson
 	-Server connection - Garvey, Anthony
 	-Semaphore control - Anthony, Johnson
 	-username and password -Garvey, Johnson
+	
     -Data Structures
-    	-Files to hold chat history
-	-char** to hold current chat
+    	-Pipes (sockets)
 
 -Timeline
     -12/28: proposal
