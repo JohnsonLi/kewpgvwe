@@ -31,4 +31,5 @@ networking.o: networking.c networking.h
 
 clean:
 	rm *.o
-	rm *~
+	rm *.txt
+	touch users.txt
