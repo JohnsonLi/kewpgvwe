@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+
 #include "networking.h"
 
 int main(int argc, char **argv) {
@@ -13,35 +14,54 @@ int main(int argc, char **argv) {
   else
     server_socket = client_setup( TEST_IP ); */
 
-  int users = open("users.txt", O_RDONLY | O_APPEND | 0644);
+  int users = open("users.txt", O_RDWR | O_APPEND | 0644);
+  printf("%d\n", users);
+  if(users < 0){
+    printf("%s\n", strerror(errno));
+  }
 
   char username[100];
   char password[100];
-  char answer[2];
+  char answer[100];
 
   printf("Do you have an account? [y/n]\n");
   fgets(answer, sizeof(answer), stdin);
   if(answer[0] == 'y'){
+    /* 
     printf("Enter your username: \n");
     fgets(username, sizeof(username), stdin);
     printf("Enter your password: \n");
     fgets(password, sizeof(password), stdin);
+    */
 
   
-    char user[200];
+    char *user = calloc(1, 200);
     int found = 0;
-    while(read(users, user, 200) && !found){
+    read(users, user, 200);
+    printf("%s\n", user);
+    printf("%ld\n", strlen(user));
+    /* while(read(users, user, 200) && !found){
       printf("%s\n", user);
-    }
+    } */
   } else if(answer[0] == 'n'){
      printf("Enter new username: \n");
-     fgets(username, sizeof(username), stdin);  
-     write(users, username, sizeof(username));
+     fgets(username, sizeof(username), stdin);
+     username[strlen(username) + 1] = '\0'; 
+     int a = write(users, username, sizeof(username));
+     if(a < 0) {
+        printf("%s\n", strerror(errno));
+     }
      printf("Enter new password: \n");
      fgets(password, sizeof(password), stdin);
-     write(users, password, sizeof(password));
+     password[strlen(username) + 1] = '\0'; 
+     int b = write(users, password, sizeof(password));
+     if(b < 0) {
+        printf("%s\n", strerror(errno));
+     }
   }
   
+  
+
   close(users);
 
   /* while (1) {
