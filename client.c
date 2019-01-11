@@ -31,7 +31,9 @@ int main(int argc, char **argv) {
     
     printf("Enter your username: \n");
     fgets(username, sizeof(username), stdin);
+    strtok(username,"\n");
     printf("Enter your password: \n");
+    strtok(password,"\n");
     fgets(password, sizeof(password), stdin);
 
   
@@ -69,12 +71,20 @@ int main(int argc, char **argv) {
   char *chatroom = malloc(300);
   int chat_file;
   sprintf(chatroom, "%s_%s.txt", username, other_person);
-  if(chat_file = open(chatroom, O_RDWR | O_APPEND)){
+  chat_file = open(chatroom, O_RDWR | O_APPEND);
+  if(chat_file < 0){
   	sprintf(chatroom, "%s_%s.txt", other_person, username);
-  	if(chat_file = open(chatroom, O_RDWR | O_APPEND)){
+  	chat_file = open(chatroom, O_RDWR | O_APPEND);
+  	if(chat_file < 0){
   		chat_file = open(chatroom, O_CREAT | O_RDWR | O_APPEND, 0644);
   		printf("Created new chat: %s\n", chatroom);
   	}
+  	else{
+  		printf("Found file\n");
+  	}
+  }
+  else{
+  		printf("Found file\n");
   }
   /* while (1) {
     printf("enter data: ");
