@@ -16,7 +16,6 @@ int main(int argc, char **argv) {
 
 
   int users = open("users.txt", O_RDWR | O_APPEND);
-  printf("%d\n", users);
   if(users < 0){
     printf("%s\n", strerror(errno));
   }
@@ -26,17 +25,18 @@ int main(int argc, char **argv) {
   char answer[100];
   char other_person[100];
 
-  printf("Do you have an account? [y/n]");
+  printf("Do you have an account? [y/n] ");
   fflush(stdout);
   fgets(answer, sizeof(answer), stdin);
+write(server_socket, answer, 1000);
   if(answer[0] == 'y'){
 
     printf("Enter your username: \n");
     fgets(username, sizeof(username), stdin);
-    // strtok(username,"\n");
+     strtok(username,"\n");
     write(server_socket, username, sizeof(username));
     printf("Enter your password: \n");
-    // strtok(password,"\n");
+     strtok(password,"\n");
     fgets(password, sizeof(password), stdin);
     write(server_socket, password, sizeof(password));
 
@@ -48,11 +48,11 @@ int main(int argc, char **argv) {
   } else if(answer[0] == 'n'){
     printf("Enter new username: ");
     fgets(username, sizeof(username), stdin);
-    // strtok(username,"\n");
+     strtok(username,"\n");
     write(server_socket, username, sizeof(username));
     printf("Enter new password: ");
     fgets(password, sizeof(password), stdin);
-    // strtok(password,"\n");
+     strtok(password,"\n");
     write(server_socket, password, sizeof(password));
   }
 
@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
   printf("Who do you want to chat with? ");
   fgets(other_person, sizeof(other_person), stdin);
   printf("Other person: %s\n", other_person);
-  // strtok(other_person,"\n");
+   strtok(other_person,"\n");
   char *chatroom = malloc(300);
   int chat_file;
   sprintf(chatroom, "%s_%s.txt", username, other_person);

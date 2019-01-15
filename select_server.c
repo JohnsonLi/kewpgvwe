@@ -24,13 +24,13 @@ int main() {
   char login_message[100];
   char register_message[100];
   client_socket = server_connect(listen_socket);
-  read(listen_socket, answer, 1000);
   printf("%s\n", strerror(errno));
   
+  read(client_socket, answer, 1000);
   printf("answer: %s\n", answer);
-  read(listen_socket, username, 100);
+  read(client_socket, username, 100);
   printf("username: %s\n", username);
-  read(listen_socket,password,100);
+  read(client_socket,password,100);
   printf("password: %s\n", password);
   if(answer[0] == 'y'){
     // if(authenticate(username,password)){
