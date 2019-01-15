@@ -1,4 +1,5 @@
 #include "networking.h"
+#include <errno.h>
 
 void process(char *s);
 void subserver(int from_client);
@@ -15,6 +16,42 @@ int main() {
   fd_set read_fds;
 
   listen_socket = server_setup();
+
+  char username[100];
+  char password[100];
+  char answer[100];
+  char other_person[100];
+  char login_message[100];
+  char register_message[100];
+  client_socket = server_connect(listen_socket);
+  read(listen_socket, answer, 1000);
+  printf("%s\n", strerror(errno));
+  
+  printf("answer: %s\n", answer);
+  read(listen_socket, username, 100);
+  printf("username: %s\n", username);
+  read(listen_socket,password,100);
+  printf("password: %s\n", password);
+  if(answer[0] == 'y'){
+    // if(authenticate(username,password)){
+    //   login_message = "Logged in successfully";
+    // }
+    // else{
+    //   login_message = "Username/password incorrect";
+    // }
+    // write(client_socket, login_message, strlen(login_message));
+  }
+  else{
+  //   if(register_user(username,password)){
+  //     register_message = "Logged in successfully";
+  //   }
+  //   else{
+  //     register_message = "Username/password incorrect";
+  //   }
+  //   write(client_socket, register_message, strlen(register_message));
+  }
+
+  
 
   while (1) {
 
