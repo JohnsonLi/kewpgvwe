@@ -61,31 +61,12 @@ write(server_socket, answer, 1000);
   printf("Who do you want to chat with? ");
   fgets(other_person, sizeof(other_person), stdin);
   printf("Other person: %s\n", other_person);
-   strtok(other_person,"\n");
-  char *chatroom = malloc(300);
-  int chat_file;
-  sprintf(chatroom, "%s_%s.txt", username, other_person);
-  write(server_socket,&chat_file,300);
-  chat_file = open(chatroom, O_RDWR | O_APPEND);
-  if(chat_file < 0){
-    sprintf(chatroom, "%s_%s.txt", other_person, username);
-    chat_file = open(chatroom, O_RDWR | O_APPEND);
-    if(chat_file < 0){
-      chat_file = open(chatroom, O_CREAT | O_RDWR | O_APPEND, 0644);
-      if (chat_file>0){
-        printf("Created new chat: %s\n", chatroom);
-      }
-      else{
-        printf("Failed\n");
-      }
-    }
-    else{
-      printf("Found file\n");
-    }
-  }
-  else{
-    printf("Found file\n");
-  }
+  strtok(other_person,"\n");
+  write(server_socket,other_person,300);
+  char* result = malloc(50);
+  read(server_socket, result, 50);
+  printf("%s hgfhkjgkjdhgdfkj", result);
+  fflush(stdout);
 
 
 

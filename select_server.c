@@ -1,5 +1,7 @@
 #include "networking.h"
 #include <errno.h>
+#include <unistd.h>
+#include <fcntl.h>
 
 void process(char *s);
 void subserver(int from_client);
@@ -27,11 +29,11 @@ int main() {
   printf("%s\n", strerror(errno));
   
   read(client_socket, answer, 1000);
-  printf("answer: %s\n", answer);
+  printf("[Server] answer: %s\n", answer);
   read(client_socket, username, 100);
-  printf("username: %s\n", username);
+  printf("[Server] username: %s\n", username);
   read(client_socket,password,100);
-  printf("password: %s\n", password);
+  printf("[Server] password: %s\n", password);
   if(answer[0] == 'y'){
     // if(authenticate(username,password)){
     //   login_message = "Logged in successfully";
@@ -50,8 +52,33 @@ int main() {
   //   }
   //   write(client_socket, register_message, strlen(register_message));
   }
-
-  
+  read(client_socket, other_person,100);
+  int chat_file;
+  char* result = malloc(50);
+  char *chatroom = malloc(300);
+  sprintf(chatroom, "%s_%s.txt", username, other_person);
+  chat_file = open(chatroom, O_RDWR | O_APPEND);
+  if(chat_file < 0){
+    sprintf(chatroom, "%s_%s.txt", other_person, username);
+    chat_file = open(chatroom, O_RDWR | O_APPEND);
+    if(chat_file < 0){
+      chat_file = open(chatroom, O_CREAT | O_RDWR | O_APPEND, 0644);
+      if (chat_file>0){
+        strcpy(result,"[Server] Created new chat\n");
+      }
+      else{
+        strcpy(result,"[Server] Failed\n");
+      }
+    }
+    else{
+      strcpy(result,"[Server] Found chat\n");
+    }
+  }
+  else{
+    strcpy(result,"[Server] Found chat\n");
+  }
+  printf("%s\n", result);
+  write(listen_socket, result, 50);
 
   while (1) {
 
@@ -63,6 +90,7 @@ int main() {
 
     //select will block until either fd is ready
     select(listen_socket + 1, &read_fds, NULL, NULL, NULL);
+    printf("hello\n");
 
     //if listen_socket triggered select
     if (FD_ISSET(listen_socket, &read_fds)) {
