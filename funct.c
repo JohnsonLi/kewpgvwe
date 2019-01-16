@@ -7,9 +7,9 @@
 
 int start(){
   
-  int users = open("users.txt", O_RDWR | O_APPEND);
-  printf("%d\n", users);
-  if(users < 0){
+  int file = open("users.txt", O_RDWR | O_APPEND);
+  printf("%d\n", file);
+  if(file < 0){
     printf("%s\n", strerror(errno));
   }
 
@@ -31,7 +31,7 @@ int start(){
   
     char *user = calloc(1, 200);
     int found = 0;
-    read(users, user, 200);
+    read(file, user, 200);
     printf("%s\n", user);
     printf("%ld\n", strlen(user));
     /* while(read(users, user, 200) && !found){
@@ -40,29 +40,30 @@ int start(){
   } else if(answer[0] == 'n'){
      printf("Enter new username: ");
      fgets(username, sizeof(username), stdin);
-     strtok(username,"\n");
-     char * use = calloc(100,sizeof(char));
+     //strtok(username,"\n");
+     char use[100];
+     memset(use,'\0',100);
      strcpy(use,username);
-     int a = write(users, use, sizeof(username));
-      write(users, '\n',1);
-    free(use); 
+     printf("%s \n",use);
+     int a = write(file, use, strlen(use));
+    //  write(users, '\n',1);
      if(a < 0) {
         printf("%s\n", strerror(errno));
      }
      printf("Enter new password: ");
      fgets(password, sizeof(password), stdin);
-     strtok(password,"\n");
-     char * pass = calloc(100,sizeof(char));
+     //strtok(password,"\n");
+     char pass[100];
+     memset(pass,'\0',100);
      strcpy(pass,password);
-     int b = write(users, pass, sizeof(password));
-      write(users, '\n',1);
+     int b = write(file, pass, strlen(pass));
+      //write(users, '\n',1);
      if(b < 0) {
         printf("%s\n", strerror(errno));
      }
-     free(pass);
   }
   
-  close(users);
+  close(file);
   /*
   printf("Who do you want to chat with? ");
   fgets(other_person, sizeof(other_person), stdin);
@@ -89,15 +90,20 @@ int start(){
   */
 }
 
-int readfile(){
-  int users  = open("users.txt", O_RDWR | O_APPEND);
-  char * line_buffer = (char *) malloc(sizeof(char) * 400);
-  int f = read(users,line_buffer,400);
-  printf("%s\n",line_buffer);
+int check(){
+  char str[999];
+  FILE * file;
+  file = fopen("users.txt", "r");
+  if (file) {
+    while (fscanf(file, "%s", str)!=EOF){
+       printf("%s\n",str);
+    }
+    fclose(file);
+  }
 }
 
 int main(){
   start();
-  readfile();
+  check();
   return 0;
 }
