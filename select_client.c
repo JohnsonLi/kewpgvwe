@@ -3,29 +3,7 @@
 #include <fcntl.h>
 #include <string.h>
 
-int check(char * u,char * p){
-  char str[100];
-  FILE * file;
-  file = fopen("users.txt", "r");
-  int i = 0;
-  strtok(p,"\n");
-  if (file) {
-      while (fscanf(file, "%s", str)!=EOF){
-	printf("line %d %s\n",i,str);
-        if(!strcmp(str,u) && i % 2 == 0){
-            fscanf(file,"%s",str);
-            i++;
-	    if(!strcmp(str,p)){	
-	      return 0;
-              } 
-	} 
-	i++;            
-      }		     
-      fclose(file);			      
-      return 1;					      
-  }
-					     
-}
+
 int main(int argc, char **argv) {
 
   int server_socket;
@@ -60,8 +38,8 @@ int main(int argc, char **argv) {
     strtok(username,"\n");
     write(server_socket, username, sizeof(username));
     printf("Enter your password: ");
-    strtok(password,"\n");
     fgets(password, sizeof(password), stdin);
+    strtok(password,"\n");
     write(server_socket, password, sizeof(password));
 
     char *user = calloc(1, 200);
@@ -86,7 +64,7 @@ int main(int argc, char **argv) {
   close(users);
   if(acc){
   printf("Who do you want to chat with? ");
-  fgets(other_person, sizeof(other_person), stdin);
+  fgets(other_person, sizeof(other_persozn), stdin);
   printf("Other person: %s\n", other_person);
   strtok(other_person,"\n");
   write(server_socket,other_person,300);

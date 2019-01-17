@@ -6,6 +6,30 @@
 void process(char *s);
 void subserver(int from_client);
 
+int check(char * u,char * p){
+  char str[100];
+  FILE * file;
+  file = fopen("users.txt", "r");
+  int i = 0;
+  strtok(p,"\n");
+  if (file) {
+      while (fscanf(file, "%s", str)!=EOF){
+	printf("line %d %s\n",i,str);
+        if(!strcmp(str,u) && i % 2 == 0){
+            fscanf(file,"%s",str);
+            i++;
+	    if(!strcmp(str,p)){	
+	      return 0;
+              } 
+	} 
+	i++;            
+      }		     
+      fclose(file);			      
+      return 1;					      
+  }
+					     
+}
+
 int main() {
 
   int listen_socket;
@@ -18,7 +42,7 @@ int main() {
   fd_set read_fds;
 
   listen_socket = server_setup();
-
+  int acc = 0;
   char username[100];
   char password[100];
   char answer[100];
@@ -35,13 +59,12 @@ int main() {
   read(client_socket,password,100);
   printf("[Server] password: %s\n", password);
   if(answer[0] == 'y'){
-    // if(authenticate(username,password)){
-    //   login_message = "Logged in successfully";
-    // }
-    // else{
-    //   login_message = "Username/password incorrect";
-    // }
-    // write(client_socket, login_message, strlen(login_message));
+    if(check(username,password)){
+      printf("Correct/n");
+    }
+    else{
+      printf("Incorrect\n");
+    }
   }
   else{
   //   if(register_user(username,password)){
