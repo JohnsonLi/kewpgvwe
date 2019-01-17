@@ -77,8 +77,8 @@ int main() {
   else{
     strcpy(result,"[Server] Found chat\n");
   }
-  printf("%s\n", result);
-  write(listen_socket, result, 50);
+  printf("%s %s\n", result, chatroom);
+  write(client_socket, result, 50);
 
   while (1) {
 

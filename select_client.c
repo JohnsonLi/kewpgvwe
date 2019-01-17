@@ -52,15 +52,15 @@ int main(int argc, char **argv) {
   printf("Do you have an account? [y/n] ");
   fflush(stdout);
   fgets(answer, sizeof(answer), stdin);
-write(server_socket, answer, 1000);
+  write(server_socket, answer, 1000);
   if(answer[0] == 'y'){
 
-    printf("Enter your username: \n");
+    printf("Enter your username: ");
     fgets(username, sizeof(username), stdin);
-     strtok(username,"\n");
+    strtok(username,"\n");
     write(server_socket, username, sizeof(username));
-    printf("Enter your password: \n");
-     strtok(password,"\n");
+    printf("Enter your password: ");
+    strtok(password,"\n");
     fgets(password, sizeof(password), stdin);
     write(server_socket, password, sizeof(password));
 
@@ -92,7 +92,7 @@ write(server_socket, answer, 1000);
   write(server_socket,other_person,300);
   char* result = malloc(50);
   read(server_socket, result, 50);
-  printf("%s hgfhkjgkjdhgdfkj", result);
+  printf("%s\n", result);
   fflush(stdout);
 }
 
