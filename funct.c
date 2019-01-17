@@ -5,6 +5,29 @@
 #include <errno.h>
 #include <string.h>
 
+int check(char * u,char * p){
+  char str[100];
+  FILE * file;
+  file = fopen("users.txt", "r");
+  int i = 0;
+  strtok(p,"\n");
+  if (file) {
+    while (fscanf(file, "%s", str)!=EOF){
+      //printf("line %d %s\n",i,str);
+      if(!strcmp(str,u) && i % 2 == 0){
+	fscanf(file,"%s",str);
+	i++;
+	if(!strcmp(str,p)){
+	  return 0;
+	}
+      }
+      i++;
+    }
+    fclose(file);
+    return 1;
+  }
+}
+
 int start(){
   
   int file = open("users.txt", O_RDWR | O_APPEND);
@@ -31,12 +54,16 @@ int start(){
   
     char *user = calloc(1, 200);
     int found = 0;
-    read(file, user, 200);
-    printf("%s\n", user);
-    printf("%ld\n", strlen(user));
-    /* while(read(users, user, 200) && !found){
-      printf("%s\n", user);
-    } */
+    //read(file, user, 200);
+    //printf("%s\n", user);
+    //printf("%ld\n", strlen(user));
+    if(check(username,password) == 0){
+      printf("Logging in\n");
+    }
+    else{
+      printf("Incorrect Username/Password\n");
+	}
+    
   } else if(answer[0] == 'n'){
      printf("Enter new username: ");
      fgets(username, sizeof(username), stdin);
@@ -90,20 +117,8 @@ int start(){
   */
 }
 
-int check(){
-  char str[999];
-  FILE * file;
-  file = fopen("users.txt", "r");
-  if (file) {
-    while (fscanf(file, "%s", str)!=EOF){
-       printf("%s\n",str);
-    }
-    fclose(file);
-  }
-}
 
 int main(){
   start();
-  check();
   return 0;
 }

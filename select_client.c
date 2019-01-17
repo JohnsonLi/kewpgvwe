@@ -1,7 +1,31 @@
 #include "networking.h"
 #include <unistd.h>
 #include <fcntl.h>
+#include <string.h>
 
+int check(char * u,char * p){
+  char str[100];
+  FILE * file;
+  file = fopen("users.txt", "r");
+  int i = 0;
+  strtok(p,"\n");
+  if (file) {
+      while (fscanf(file, "%s", str)!=EOF){
+	printf("line %d %s\n",i,str);
+        if(!strcmp(str,u) && i % 2 == 0){
+            fscanf(file,"%s",str);
+            i++;
+	    if(!strcmp(str,p)){	
+	      return 0;
+              } 
+	} 
+	i++;            
+      }		     
+      fclose(file);			      
+      return 1;					      
+  }
+					     
+}
 int main(int argc, char **argv) {
 
   int server_socket;
@@ -24,7 +48,7 @@ int main(int argc, char **argv) {
   char password[100];
   char answer[100];
   char other_person[100];
-
+  int acc = 0;
   printf("Do you have an account? [y/n] ");
   fflush(stdout);
   fgets(answer, sizeof(answer), stdin);
@@ -41,23 +65,26 @@ write(server_socket, answer, 1000);
     write(server_socket, password, sizeof(password));
 
     char *user = calloc(1, 200);
-    int found = 0;
-    read(users, user, 200);
-    printf("%s\n", user);
-    printf("%ld\n", strlen(user));
+    if(check(username,password) == 0){
+        printf("Logging in\n");
+	acc = 1;
+       }
+    else{
+	printf("Incorrect Username/Password\n");
+    } 
   } else if(answer[0] == 'n'){
     printf("Enter new username: ");
     fgets(username, sizeof(username), stdin);
      strtok(username,"\n");
-    write(server_socket, username, sizeof(username));
+    write(server_socket, username, strlen(username));
     printf("Enter new password: ");
     fgets(password, sizeof(password), stdin);
      strtok(password,"\n");
-    write(server_socket, password, sizeof(password));
+    write(server_socket, password, strlen(password));
   }
 
   close(users);
-
+  if(acc){
   printf("Who do you want to chat with? ");
   fgets(other_person, sizeof(other_person), stdin);
   printf("Other person: %s\n", other_person);
@@ -67,7 +94,7 @@ write(server_socket, answer, 1000);
   read(server_socket, result, 50);
   printf("%s hgfhkjgkjdhgdfkj", result);
   fflush(stdout);
-
+}
 
 
 
