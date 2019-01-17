@@ -65,7 +65,7 @@ write(server_socket, answer, 1000);
   write(server_socket,other_person,300);
   char* result = malloc(50);
   read(server_socket, result, 50);
-  printf("%s hgfhkjgkjdhgdfkj", result);
+  printf("%s\n", result);
   fflush(stdout);
 
 
