@@ -75,66 +75,66 @@ int main() {
     if(b< 0 ){
       printf("%s\n",strerror(errno));
     }
-    read(client_socket, other_person,100);
-    int chat_file;
-    char* result = malloc(50);
-    char *chatroom = malloc(300);
-    sprintf(chatroom, "%s_%s.txt", username, other_person);
+  }
+  read(client_socket, other_person,100);
+  int chat_file;
+  char* result = malloc(50);
+  char *chatroom = malloc(300);
+  sprintf(chatroom, "%s_%s.txt", username, other_person);
+  chat_file = open(chatroom, O_RDWR | O_APPEND);
+  if(chat_file < 0){
+    sprintf(chatroom, "%s_%s.txt", other_person, username);
     chat_file = open(chatroom, O_RDWR | O_APPEND);
     if(chat_file < 0){
-      sprintf(chatroom, "%s_%s.txt", other_person, username);
-      chat_file = open(chatroom, O_RDWR | O_APPEND);
-      if(chat_file < 0){
-	chat_file = open(chatroom, O_CREAT | O_RDWR | O_APPEND, 0644);
-	if (chat_file>0){
-	  strcpy(result,"[Server] Created new chat\n");
-	}
-	else{
-	  strcpy(result,"[Server] Failed\n");
-	}
+      chat_file = open(chatroom, O_CREAT | O_RDWR | O_APPEND, 0644);
+      if (chat_file>0){
+	strcpy(result,"[Server] Created new chat\n");
       }
       else{
-	strcpy(result,"[Server] Found chat\n");
+	strcpy(result,"[Server] Failed\n");
       }
     }
     else{
       strcpy(result,"[Server] Found chat\n");
     }
-    printf("%s %s\n", result, chatroom);
-    write(client_socket, result, 50);
+  }
+  else{
+    strcpy(result,"[Server] Found chat\n");
+  }
+  printf("%s %s\n", result, chatroom);
+  write(client_socket, result, 50);
 
-    while (1) {
+  while (1) {
 
-      //select() modifies read_fds
-      //we must reset it at each iteration
-      FD_ZERO(&read_fds); //0 out fd set
-      FD_SET(STDIN_FILENO, &read_fds); //add stdin to fd set
-      FD_SET(listen_socket, &read_fds); //add socket to fd set
+    //select() modifies read_fds
+    //we must reset it at each iteration
+    FD_ZERO(&read_fds); //0 out fd set
+    FD_SET(STDIN_FILENO, &read_fds); //add stdin to fd set
+    FD_SET(listen_socket, &read_fds); //add socket to fd set
 
-      //select will block until either fd is ready
-      select(listen_socket + 1, &read_fds, NULL, NULL, NULL);
-      printf("hello\n");
+    //select will block until either fd is ready
+    select(listen_socket + 1, &read_fds, NULL, NULL, NULL);
+    printf("hello\n");
 
-      //if listen_socket triggered select
-      if (FD_ISSET(listen_socket, &read_fds)) {
-	client_socket = server_connect(listen_socket);
+    //if listen_socket triggered select
+    if (FD_ISSET(listen_socket, &read_fds)) {
+      client_socket = server_connect(listen_socket);
 
-	f = fork();
-	if (f == 0)
-	  subserver(client_socket);
-	else {
-	  subserver_count++;
-	  close(client_socket);
-	}
-      }//end listen_socket select
+      f = fork();
+      if (f == 0)
+	subserver(client_socket);
+      else {
+	subserver_count++;
+	close(client_socket);
+      }
+    }//end listen_socket select
 
-      //if stdin triggered select
-      if (FD_ISSET(STDIN_FILENO, &read_fds)) {
-	//if you don't read from stdin, it will continue to trigger select()
-	fgets(buffer, sizeof(buffer), stdin);
-	printf("[server] subserver count: %d\n", subserver_count);
-      }//end stdin select
-    }
+    //if stdin triggered select
+    if (FD_ISSET(STDIN_FILENO, &read_fds)) {
+      //if you don't read from stdin, it will continue to trigger select()
+      fgets(buffer, sizeof(buffer), stdin);
+      printf("[server] subserver count: %d\n", subserver_count);
+    }//end stdin select
   }
 }
 
