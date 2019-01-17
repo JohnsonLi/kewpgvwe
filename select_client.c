@@ -41,15 +41,6 @@ int main(int argc, char **argv) {
     fgets(password, sizeof(password), stdin);
     strtok(password,"\n");
     write(server_socket, password, sizeof(password));
-
-    char *user = calloc(1, 200);
-    if(check(username,password) == 0){
-        printf("Logging in\n");
-	acc = 1;
-       }
-    else{
-	printf("Incorrect Username/Password\n");
-    } 
   } else if(answer[0] == 'n'){
     printf("Enter new username: ");
     fgets(username, sizeof(username), stdin);
@@ -64,7 +55,7 @@ int main(int argc, char **argv) {
   close(users);
   if(acc){
   printf("Who do you want to chat with? ");
-  fgets(other_person, sizeof(other_persozn), stdin);
+  fgets(other_person, sizeof(other_person), stdin);
   printf("Other person: %s\n", other_person);
   strtok(other_person,"\n");
   write(server_socket,other_person,300);
