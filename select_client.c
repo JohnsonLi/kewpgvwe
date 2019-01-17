@@ -16,7 +16,6 @@ int main(int argc, char **argv) {
   else
     server_socket = client_setup( TEST_IP );
 
-
   int users = open("users.txt", O_RDWR | O_APPEND);
   if(users < 0){
     printf("%s\n", strerror(errno));
@@ -32,28 +31,27 @@ int main(int argc, char **argv) {
   fgets(answer, sizeof(answer), stdin);
   write(server_socket, answer, 1000);
   if(answer[0] == 'y'){
-
     printf("Enter your username: ");
     fgets(username, sizeof(username), stdin);
-    strtok(username,"\n");
-    write(server_socket, username, sizeof(username));
+    // strtok(username,"\n");
+    write(server_socket, username, strlen(username));
     printf("Enter your password: ");
     fgets(password, sizeof(password), stdin);
-    strtok(password,"\n");
-    write(server_socket, password, sizeof(password));
-  } else if(answer[0] == 'n'){
+    //strtok(password,"\n");
+    write(server_socket, password, strlen(password));
+  }
+  else if(answer[0] == 'n'){
     printf("Enter new username: ");
     fgets(username, sizeof(username), stdin);
-     strtok(username,"\n");
+    // strtok(username,"\n");
     write(server_socket, username, strlen(username));
     printf("Enter new password: ");
     fgets(password, sizeof(password), stdin);
-     strtok(password,"\n");
+    // strtok(password,"\n");
     write(server_socket, password, strlen(password));
   }
 
   close(users);
-  if(acc){
   printf("Who do you want to chat with? ");
   fgets(other_person, sizeof(other_person), stdin);
   printf("Other person: %s\n", other_person);
@@ -63,18 +61,11 @@ int main(int argc, char **argv) {
   read(server_socket, result, 50);
   printf("%s\n", result);
   fflush(stdout);
-}
-
-
-
-
-
-
 
 
   while (1) {
 
-    printf("enter data: ");
+    printf("rip\n ");
     //the above printf does not have \n
     //flush the buffer to immediately print
     fflush(stdout);
