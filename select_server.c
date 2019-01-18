@@ -2,9 +2,18 @@
 #include <errno.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <sys/stat.h>
 
-void process(char *s);
-void subserver(int from_client);
+int file_is_modified(const char *path, time_t oldMTime) {
+  struct stat file_stat;
+  int err = stat(path, &file_stat);
+  if (err != 0) {
+    perror(" [file_is_modified] stat");
+    exit(errno);
+  }
+  return file_stat.st_mtime > oldMTime;
+}
+
 
 int check_account(char * u,char * p){
   char str[100];
@@ -32,13 +41,13 @@ int check_account(char * u,char * p){
 }
 
 int main() {
-
+  struct stat file_stat;
   int listen_socket;
   int client_socket;
   int f;
   int subserver_count = 0;
   char buffer[BUFFER_SIZE];
-
+  int last_modified = 0;
   //set of file descriptors to read from
   fd_set read_fds;
 
@@ -47,6 +56,7 @@ int main() {
   f = fork();
   if (f==0){
     int acc = 0;
+    int err;
     char username[100];
     char password[100];
     char answer[100];
@@ -105,10 +115,14 @@ int main() {
           }
         }
         else{
+	  err = stat(chatroom, &file_stat);
+	  last_modified = file_stat.st_mtime;
           strcpy(result,"[Server] Found chat\n");
         }
       }
       else{
+	err = stat(chatroom, &file_stat);
+	last_modified = file_stat.st_mtime;
         strcpy(result,"[Server] Found chat\n");
       }
       printf("%s %s\n", result, chatroom);
@@ -118,9 +132,16 @@ int main() {
 
       while (1) {
 	if (in = read(client_socket, buffer, 100)){
-	  printf("%s",buffer);
+	  write(chat_file, buffer, strlen(buffer));
 	  while(in = read(client_socket, buffer, 100)){
-	    printf("%s",buffer);
+	     write(chat_file, buffer, strlen(buffer));
+	  }
+	}
+	if(file_is_modified(chatroom, last_modified)){
+	  err = stat(chatroom, &file_stat);
+	  last_modified = file_stat.st_mtime;
+	  while(in = read(chat_file, buffer, 100)){
+	    write(client_socket, buffer, in);
 	  }
 	}
       }
@@ -132,12 +153,3 @@ int main() {
 }
 
 
-int file_is_modified(const char *path, time_t oldMTime) {
-    struct stat file_stat;
-    int err = stat(path, &file_stat);
-    if (err != 0) {
-        perror(" [file_is_modified] stat");
-        exit(errno);
-    }
-    return file_stat.st_mtime > oldMTime;
-}

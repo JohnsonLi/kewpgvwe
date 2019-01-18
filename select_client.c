@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
 
   while (1) {
 
-    printf("Enter message ");
+    printf("Enter message \n");
     //the above printf does not have \n
     //flush the buffer to immediately print
     fflush(stdout);
@@ -73,11 +73,16 @@ int main(int argc, char **argv) {
     char* buffer = calloc(1, 100);
     if (in = read(STDIN_FILENO, buffer, 100)){
       write(server_socket, buffer, in);
+      printf("%s", buffer);
+      fflush(stdout);
     }
-    if (in = read(server_socket, buffer, 100)){
-      printf("%s",buffer);
-      while(in = read(server_socket, buffer, 100)){
-	printf("%s",buffer);
+    else{
+      if (in = read(server_socket, buffer, 100)){
+	while(in = read(server_socket, buffer, 100)){
+	  printf("%d",in);
+	}
+	fflush(stdout);
       }
     }
+  }
 }
