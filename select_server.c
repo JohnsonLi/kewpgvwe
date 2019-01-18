@@ -113,51 +113,20 @@ int main() {
       }
       printf("%s %s\n", result, chatroom);
       write(client_socket, result, 50);
+      int in;
+      char* buffer = calloc(1,100);
 
       while (1) {
-
-      //select() modifies read_fds
-      //we must reset it at each iteration
-      FD_ZERO(&read_fds); //0 out fd set
-      FD_SET(STDIN_FILENO, &read_fds); //add stdin to fd set
-      FD_SET(chat_file, &read_fds); //add socket to fd set
-
-      //select will block until either fd is ready
-      select(chat_file + 1, &read_fds, NULL, NULL, NULL);
-      printf("hello\n");
-
-      //if listen_socket triggered select
-      if (FD_ISSET(chat_file, &read_fds)) {
-        printf("%ld\n", read(chat_file,buffer,10));
-      }//end listen_socket select
-
-      //if stdin triggered select
-      if (FD_ISSET(STDIN_FILENO, &read_fds)) {
-  //if you don't read from stdin, it will continue to trigger select()
-        fgets(buffer, sizeof(buffer), stdin);
-        printf("[server] subserver count: %d\n", subserver_count);
-      }//end stdin select
+	if (in = read(client_socket, buffer, 100)){
+	  printf("%s",buffer);
+	  while(in = read(client_socket, buffer, 100)){
+	    printf("%s",buffer);
+	  }
+	}
+      }
     }
   }
-}
-else{
-  close(client_socket);
-}
-}
-
-void subserver(int client_socket) {
-  char buffer[BUFFER_SIZE];
-
-  //for testing client select statement
-  strncpy(buffer, "hello client", sizeof(buffer));
-  write(client_socket, buffer, sizeof(buffer));
-
-  while (read(client_socket, buffer, sizeof(buffer))) {
-
-    printf("[subserver %d] received: [%s]\n", getpid(), buffer);
-    //process(buffer);
-    write(client_socket, buffer, sizeof(buffer));
-  }//end read loop
-  close(client_socket);
-  exit(0);
+  else{
+    close(client_socket);
+  }
 }
