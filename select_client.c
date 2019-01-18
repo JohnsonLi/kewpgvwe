@@ -8,7 +8,7 @@ int main(int argc, char **argv) {
 
   int server_socket;
   char buffer[BUFFER_SIZE];
-
+  int red;
   fd_set read_fds;
 
   if (argc == 2)
@@ -43,11 +43,11 @@ int main(int argc, char **argv) {
   else if(answer[0] == 'n'){
     printf("Enter new username: ");
     fgets(username, sizeof(username), stdin);
-    // strtok(username,"\n");
+    strtok(username,"\n");
     write(server_socket, username, strlen(username));
     printf("Enter new password: ");
     fgets(password, sizeof(password), stdin);
-    // strtok(password,"\n");
+    strtok(password,"\n");
     write(server_socket, password, strlen(password));
   }
 
@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
 
   while (1) {
 
-    printf("rip\n ");
+    printf("Enter message ");
     //the above printf does not have \n
     //flush the buffer to immediately print
     fflush(stdout);
@@ -91,11 +91,10 @@ int main(int argc, char **argv) {
     //send messages to all the clients, but
     //this would allow for broadcast messages
     if (FD_ISSET(server_socket, &read_fds)) {
-      read(server_socket, buffer, sizeof(buffer));
-      printf("[SERVER BROADCAST] [%s]\n", buffer);
-      printf("enter data: ");
-      //the above printf does not have \n
-      //flush the buffer to immediately print
+      printf("server\n");
+      while(red = read(server_socket, buffer, sizeof(buffer))){
+        printf("%s\n", buffer);
+      }
       fflush(stdout);
     }//end socket select
 
