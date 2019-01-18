@@ -21,10 +21,10 @@ int main(int argc, char **argv) {
     printf("%s\n", strerror(errno));
   }
 
-  char username[100];
-  char password[100];
-  char answer[100];
-  char other_person[100];
+  char* username = calloc(1,50);
+  char* password = calloc(1,50);
+  char* answer = calloc(1,50);
+  char* other_person = calloc(1,50);
   int acc = 0;
   printf("Do you have an account? [y/n] ");
   fflush(stdout);
@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
     //strtok(password,"\n");
     write(server_socket, password, strlen(password));
   }
-  else if(answer[0] == 'n'){
+  else{
     printf("Enter new username: ");
     fgets(username, sizeof(username), stdin);
     strtok(username,"\n");
@@ -77,7 +77,7 @@ int main(int argc, char **argv) {
     FD_SET(server_socket, &read_fds); //add socket to fd set
 
     //select will block until either fd is ready
-    select(server_socket + 1, &read_fds, NULL, NULL, NULL);
+    select(server_socket +1, &read_fds, NULL, NULL, NULL);
 
     if (FD_ISSET(STDIN_FILENO, &read_fds)) {
       fgets(buffer, sizeof(buffer), stdin);
