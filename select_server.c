@@ -134,12 +134,8 @@ int main() {
 
      
     while (1) {
-     printf("hi\n");
-     printf("step2\n");
      read(client_socket, buffer, 100);
-     printf("step3\n");
      while (strlen(buffer)){
-      printf("buffer lenght%ld\n", strlen(buffer));
       write(chat_file, buffer, strlen(buffer));
       printf("%s\n", buffer);
       print_file(chatroom,client_socket);

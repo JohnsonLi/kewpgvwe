@@ -64,8 +64,8 @@ int main(int argc, char **argv) {
 
 
   while (1) {
-
-    printf("enter data: \n");
+    char* buffer = calloc(1,BUFFER_SIZE);
+    printf("enter data: ");
     //the above printf does not have \n
     //flush the buffer to immediately print
     fflush(stdout);
@@ -81,10 +81,9 @@ int main(int argc, char **argv) {
 
     if (FD_ISSET(STDIN_FILENO, &read_fds)) {
       fgets(buffer, sizeof(buffer), stdin);
-      *strchr(buffer, '\n') = 0;
+      // *strchr(buffer, '\n') = 0;
       write(server_socket, buffer, sizeof(buffer));
       read(server_socket, buffer, sizeof(buffer));
-      printf("received: [%s]\n", buffer);
     }//end stdin select
 
     //currently the server is not set up to
@@ -97,6 +96,6 @@ int main(int argc, char **argv) {
       //flush the buffer to immediately print
       fflush(stdout);
     }//end socket select
-
+    free(buffer);
 }//end loop
 }
