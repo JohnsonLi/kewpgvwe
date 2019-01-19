@@ -31,10 +31,13 @@ int check_account(char * u,char * p){
 int print_file(char* filename, int client_socket){
  int fd = open(filename, O_RDONLY);
  char* buffer = malloc(100);
+ printf("%ld\n", sizeof(buffer));
  int a;
- while(a=read(fd, buffer, sizeof(buffer))){
-  printf("%s what it read\n", buffer);
-  write(client_socket, buffer, strlen(buffer));
+ char* fence = "==========================================";
+ write(client_socket,fence, strlen(fence));
+ while(a=read(fd, buffer, 100)){
+  printf("%s\n", buffer);
+  write(client_socket, buffer, a);
  }
  close(fd);
 }
@@ -137,7 +140,6 @@ int main() {
      read(client_socket, buffer, 100);
      while (strlen(buffer)){
       write(chat_file, buffer, strlen(buffer));
-      printf("%s\n", buffer);
       print_file(chatroom,client_socket);
       read(client_socket, buffer, 100);
      }

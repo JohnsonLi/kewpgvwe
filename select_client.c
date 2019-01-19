@@ -28,32 +28,32 @@ int main(int argc, char **argv) {
   int acc = 0;
   printf("Do you have an account? [y/n] ");
   fflush(stdout);
-  fgets(answer, sizeof(answer), stdin);
+  fgets(answer, 50, stdin);
   write(server_socket, answer, 1000);
   if(answer[0] == 'y'){
     printf("Enter your username: ");
-    fgets(username, sizeof(username), stdin);
+    fgets(username, 100, stdin);
     // strtok(username,"\n");
     write(server_socket, username, strlen(username));
     printf("Enter your password: ");
-    fgets(password, sizeof(password), stdin);
+    fgets(password, 100, stdin);
     //strtok(password,"\n");
     write(server_socket, password, strlen(password));
   }
   else{
     printf("Enter new username: ");
-    fgets(username, sizeof(username), stdin);
+    fgets(username, 100, stdin);
     strtok(username,"\n");
     write(server_socket, username, strlen(username));
     printf("Enter new password: ");
-    fgets(password, sizeof(password), stdin);
+    fgets(password, 100, stdin);
     strtok(password,"\n");
     write(server_socket, password, strlen(password));
   }
 
   close(users);
   printf("Who do you want to chat with? ");
-  fgets(other_person, sizeof(other_person), stdin);
+  fgets(other_person, 100, stdin);
   printf("Other person: %s\n", other_person);
   strtok(other_person,"\n");
   write(server_socket,other_person,300);
@@ -65,11 +65,7 @@ int main(int argc, char **argv) {
 
   while (1) {
     char* buffer = calloc(1,BUFFER_SIZE);
-    printf("enter data: ");
-    //the above printf does not have \n
-    //flush the buffer to immediately print
-    fflush(stdout);
-
+    char* text = calloc(1,BUFFER_SIZE+100);
     //select() modifies read_fds
     //we must reset it at each iteration
     FD_ZERO(&read_fds);
@@ -80,17 +76,17 @@ int main(int argc, char **argv) {
     select(server_socket + 1, &read_fds, NULL, NULL, NULL);
 
     if (FD_ISSET(STDIN_FILENO, &read_fds)) {
-      fgets(buffer, sizeof(buffer), stdin);
+      fgets(buffer, BUFFER_SIZE, stdin);
       // *strchr(buffer, '\n') = 0;
-      write(server_socket, buffer, sizeof(buffer));
-      read(server_socket, buffer, sizeof(buffer));
+      sprintf(text,"[%s] %s", username, buffer);
+      write(server_socket, text, strlen(text));
     }//end stdin select
 
     //currently the server is not set up to
     //send messages to all the clients, but
     //this would allow for broadcast messages
     if (FD_ISSET(server_socket, &read_fds)) {
-      read(server_socket, buffer, sizeof(buffer));
+      read(server_socket, buffer, BUFFER_SIZE);
       printf("%s\n", buffer);
       //the above printf does not have \n
       //flush the buffer to immediately print
