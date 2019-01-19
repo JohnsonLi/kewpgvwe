@@ -1,4 +1,4 @@
-# -project name-
+# Txtenger
 ### By waterlemon_soda (Anthony Lam, Johnson Li, Garvey Zhou) pd 5
 
 #### Description
@@ -17,4 +17,11 @@ Our project is a chat program that is used to chat with another user on the same
 `git clone git@github.com:JohnsonLi/waterlemon_soda.git`  
 2) Go into the repo directory and run `make`  
 3) Then run `./client <local ip of server computer>`  
-4) Follow the prompts and enter the name of who you want to chat with.
+4) Follow the prompt and enter the name of the person you want to chat with
+5) Chat
+
+##### Exit
+1) Make sure to Ctrl + C on all clients
+2) Ctrl + C on server
+
+
