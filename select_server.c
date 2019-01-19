@@ -14,8 +14,8 @@ int check_account(char * u,char * p){
  if (file) {
   while (fscanf(file, "%s", str)!=EOF){
    if(!strcmp(str,u) && i % 2 == 0){
-    printf("true");
     fscanf(file,"%s",str);
+    //printf("%s %s \n",p,str);
     i++;
     if(!strcmp(str,p)){ 
      return 0;
@@ -83,8 +83,8 @@ int main() {
    printf("[Server] password: %s\n", password);
 
    if(answer[0] == 'y'){
-    if(check_account(username,password)){
-     printf("Correct/n");
+    if(!check_account(username,password)){
+     printf("Correct \n");
     }
     else{
      printf("Incorrect\n");
