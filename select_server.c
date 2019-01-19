@@ -31,15 +31,16 @@ int check_account(char * u,char * p){
 int print_file(char* filename, int client_socket){
  int fd = open(filename, O_RDONLY);
  char* buffer = malloc(100);
- printf("%ld\n", sizeof(buffer));
  int a;
- char* fence = "==========================================";
+ char* fence = "==========================================\n";
+ char* enter = "Enter Message: ";
  write(client_socket,fence, strlen(fence));
  while(a=read(fd, buffer, 100)){
   printf("%s\n", buffer);
   write(client_socket, buffer, a);
  }
  close(fd);
+ write(client_socket, enter, strlen(enter));
 }
 
 int main() {
@@ -47,6 +48,7 @@ int main() {
  int listen_socket;
  int client_socket;
  int f;
+ char* enter = "Enter Message: ";
  int subserver_count = 0;
  char buffer[BUFFER_SIZE];
  int last_modified = 0;
@@ -129,6 +131,7 @@ int main() {
     }
     printf("%s %s\n", result, chatroom);
     write(client_socket, result, 50);
+    write(client_socket,enter,strlen(enter));
     int in;
     char* buffer = calloc(1,100);
 
