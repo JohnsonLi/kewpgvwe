@@ -1,0 +1,49 @@
+Team Waterlemon-soda
+Anthony Lam
+Johnson Li
+Garvey Zhou
+Systems Pd 5
+
+-----------
+
+Chat Program
+
+devlog:
+
+2019-01-03
+------------
+Discuss our project in details and review structs needed libraries.
+
+2019-01-10
+-----------
+Johnson : added user prompt 
+Anthony : added sockets
+Garvey : reviewed code
+
+2019-01-14
+----------
+Garvey : worked on user promts
+
+2019-01-15
+---------
+Johnson : fixed transport error
+
+2019-01-16
+---------
+Garvey : incorporate user prompt into sockets
+Anthony : added chat files
+
+2019-01-17
+---------
+Johnson : updated readme
+Anthony : added socket processes
+Garvey : added writing to file
+
+2019-01-18
+---------
+Anthony : finish most of chatting
+
+2019-01-19
+--------
+Anthony : fixed bugs and polished up code
+Garvey : update readme

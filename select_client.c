@@ -43,11 +43,11 @@ int main(int argc, char **argv) {
   else{
     printf("Enter new username: ");
     fgets(username, 100, stdin);
-    strtok(username,"\n");
+    //strtok(username,"\n");
     write(server_socket, username, strlen(username));
     printf("Enter new password: ");
     fgets(password, 100, stdin);
-    strtok(password,"\n");
+    //strtok(password,"\n");
     write(server_socket, password, strlen(password));
   }
 
